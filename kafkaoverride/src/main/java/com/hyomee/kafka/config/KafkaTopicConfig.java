@@ -31,6 +31,7 @@ public class KafkaTopicConfig {
   @Value(value="${topic.partitioned.name}")
   private String topicPartitionedName;
 
+  // 새로운 토픽을 등록 하기 위해서 KafkaAdmin 주입
   @Bean
   public KafkaAdmin kafkaAdmin() {
     log.info(String.format("#### Bootstrap Address :: %s", bootstrapAddress));
@@ -39,6 +40,7 @@ public class KafkaTopicConfig {
     return new KafkaAdmin(configs);
   }
 
+  // 토픽 생성
   @Bean
   public NewTopic topic1() {
     return new NewTopic(topicMessageName, 1, (short) 1);

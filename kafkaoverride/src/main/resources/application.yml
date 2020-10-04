@@ -1,0 +1,25 @@
+server:
+  port: 9000
+
+kafka:
+  bootstrapAddress: localhost:9092
+
+topic:
+  message:
+    name: hyomee
+  greeting:
+    name: greeting
+  filtered:
+    name : filtered
+  partitioned:
+    name: partitioned
+
+
+consumerGroup:
+  hyomeeGrp: hyomee
+  headerGrp: headers
+  partitionsGrp: partitions
+  filterGrp: filter
+  greetingGrp: greeting
+
+filter: hi

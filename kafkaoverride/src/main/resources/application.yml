@@ -7,8 +7,8 @@ kafka:
 topic:
   message:
     name: hyomee
-  greeting:
-    name: greeting
+  modelVo:
+    name: modelvo
   filtered:
     name : filtered
   partitioned:
@@ -20,6 +20,15 @@ consumerGroup:
   headerGrp: headers
   partitionsGrp: partitions
   filterGrp: filter
-  greetingGrp: greeting
+  modelVoGrp: greeting
 
 filter: hi
+
+logging:
+  level:
+    root: ERROR ##
+    org.springframework: ERROR
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    com.hyomee : DEBUG
+

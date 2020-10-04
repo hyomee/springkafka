@@ -22,8 +22,8 @@ public class KafkaTopicConfig {
   @Value(value="${topic.message.name}")
   private String topicMessageName;
 
-  @Value(value="${topic.greeting.name}")
-  private String topicGreetingName;
+  @Value(value="${topic.modelVo.name}")
+  private String topicModelVoName;
 
   @Value(value="${topic.filtered.name}")
   private String topicFilteredName;
@@ -56,7 +56,7 @@ public class KafkaTopicConfig {
 
   @Bean
   public NewTopic topic4() {
-    return new NewTopic(topicGreetingName, 1, (short) 1);
+    return new NewTopic(topicModelVoName, 1, (short) 1);
   }
 
 }

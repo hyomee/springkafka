@@ -1,5 +1,6 @@
 package com.hyomee.kafka.producer;
 
+import com.hyomee.kafka.model.ModelVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +17,14 @@ public class Publisher {
   @Autowired
   private KafkaTemplate<String, String> kafkaTemplate;
 
+  @Autowired
+  private KafkaTemplate<String, ModelVO> modelVOKafkaTemplate;
+
   @Value(value="${topic.message.name}")
   private String topicMessageName;
 
-  @Value(value="${topic.greeting.name}")
-  private String topicGreetingName;
+  @Value(value="${topic.modelVo.name}")
+  private String topicModelVoName;
 
   @Value(value="${topic.filtered.name}")
   private String topicFilteredName;
@@ -30,18 +34,37 @@ public class Publisher {
 
 
   public void sendTopicMessage(String message) {
-    log.info(String.format("Topic=%s, Message=%s", topicMessageName, message));
+    log.debug(String.format("### Topic Test :: Topic=%s, Message=%s", topicMessageName, message));
     ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicMessageName, message);
     future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
       @Override
       public void onFailure(Throwable throwable) {
-        log.error(String.format("Send message= [ %s ] :: %s "), message, throwable.getMessage());
+        log.error(String.format("### Send message= [ %s ] :: %s "), message, throwable.getMessage());
       }
 
       @Override
       public void onSuccess(SendResult<String, String> result) {
-        log.info(String.format("Send message= [ %s ] , Offset  :: %s , "), message, result.getRecordMetadata().offset());
+        log.debug(String.format("### Send message= [ %s ] , Offset  :: %s , "), message, result.getRecordMetadata().offset());
       }
     });
+  }
+
+
+  //
+  public void sendMessageToPartition(String message, int partition) {
+    log.debug(String.format("### Partition Test : Topic :: %s , Partition :: %s, Message :: %s", topicPartitionedName, partition, message));
+    kafkaTemplate.send(topicPartitionedName, partition, null, message);
+  }
+
+  //
+  public void sendMessageToFiltered(String message) {
+    log.debug(String.format("### Filter Test : Topic :: %s , Message :: %s", topicFilteredName, message));
+    kafkaTemplate.send(topicFilteredName, message);
+  }
+
+  //
+  public void sendMessageToModelVO(String message) {
+    log.debug(String.format("### ModelVO Test : Topic :: %s , Message :: %s", topicModelVoName, message));
+    modelVOKafkaTemplate.send(topicModelVoName, new ModelVO(message, "Hong!"));
   }
 }
